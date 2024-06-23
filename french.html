@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Conjugation Challenge</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin-top: 50px;
+        }
+        .question {
+            margin-bottom: 20px;
+        }
+        .options {
+            list-style-type: none;
+            padding: 0;
+        }
+        .options li {
+            margin: 10px 0;
+        }
+        .options li button {
+            padding: 10px 20px;
+            font-size: 16px;
+        }
+        .score {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Conjugation Challenge</h1>
+    <div class="question">
+        <p id="verb"></p>
+        <ul class="options" id="options">
+        </ul>
+    </div>
+    <div class="score">
+        <p>Score: <span id="score">0</span></p>
+    </div>
+
+    <script>
+        const questions = [
+            {
+                verb: 'Parler',
+                subject: 'Je',
+                tense: 'Present',
+                options: ['Parles', 'Parlez', 'Parle', 'Parlons'],
+                correct: 'Parle'
+            },
+            {
+                verb: 'Avoir',
+                subject: 'Nous',
+                tense: 'Passé Composé',
+                options: ['Avons eu', 'Avions eu', 'Avait eu', 'Aurons eu'],
+                correct: 'Avons eu'
+            },
+            {
+                verb: 'Aller',
+                subject: 'Il',
+                tense: 'Future',
+                options: ['Ira', 'Allait', 'Est allé', 'Irait'],
+                correct: 'Ira'
+            },
+            {
+                verb: 'Finir',
+                subject: 'Vous',
+                tense: 'Imperfect',
+                options: ['Finissiez', 'Finissons', 'Finirez', 'Finissait'],
+                correct: 'Finissiez'
+            }
+        ];
+
+        let currentQuestionIndex = 0;
+        let score = 0;
+
+        const verbElement = document.getElementById('verb');
+        const optionsElement = document.getElementById('options');
+        const scoreElement = document.getElementById('score');
+
+        function loadQuestion() {
+            const currentQuestion = questions[currentQuestionIndex];
+            verbElement.textContent = `Verb: ${currentQuestion.verb}, Subject: ${currentQuestion.subject}, Tense: ${currentQuestion.tense}`;
+            optionsElement.innerHTML = '';
+            currentQuestion.options.forEach(option => {
+                const li = document.createElement('li');
+                const button = document.createElement('button');
+                button.textContent = option;
+                button.addEventListener('click', () => checkAnswer(option));
+                li.appendChild(button);
+                optionsElement.appendChild(li);
+            });
+        }
+
+        function checkAnswer(selectedOption) {
+            const currentQuestion = questions[currentQuestionIndex];
+            if (selectedOption === currentQuestion.correct) {
+                score++;
+                scoreElement.textContent = score;
+            }
+            currentQuestionIndex++;
+            if (currentQuestionIndex < questions.length) {
+                loadQuestion();
+            } else {
+                verbElement.textContent = 'Game Over! Your final score is ' + score;
+                optionsElement.innerHTML = '';
+            }
+        }
+
+        loadQuestion();
+    </script>
+</body>
+</html>
